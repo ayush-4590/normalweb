@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flappy Bird</title>
+  <style>
+    canvas { background: skyblue; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Flappy Bird</h2>
+  <canvas id="gameCanvas" width="320" height="480"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let birdY = 150, birdV = 0, gravity = 0.6;
+    const pipes = [{x: 400, gap: 120, height: 200}];
+
+    function draw() {
+      ctx.clearRect(0, 0, 320, 480);
+      ctx.fillStyle = "yellow";
+      ctx.beginPath();
+      ctx.arc(60, birdY, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (let pipe of pipes) {
+        pipe.x -= 2;
+        if (pipe.x < -50) {
+          pipe.x = 320;
+          pipe.height = 100 + Math.random() * 200;
+        }
+        ctx.fillStyle = "green";
+        ctx.fillRect(pipe.x, 0, 50, pipe.height);
+        ctx.fillRect(pipe.x, pipe.height + pipe.gap, 50, 480);
+      }
+
+      birdV += gravity;
+      birdY += birdV;
+      requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener("click", () => birdV = -10);
+    draw();
+  </script>
+</body>
+</html>
